@@ -1,15 +1,5 @@
-import React from "react";
-import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Typography,
-  Divider,
-  Button,
-} from "@mui/material";
-
+import { List } from "@mui/material";
+import SingleOrder from "../components/Order/SingleOrder";
 const orders = [
   {
     id: 1,
@@ -37,43 +27,7 @@ function OrdersPage() {
   return (
     <List sx={{ maxWidth: "80%", margin: "0 auto" }}>
       {orders.map((order) => (
-        <React.Fragment key={order.id}>
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar
-                variant="rounded"
-                src={order.thumbnail}
-                sx={{ width: 80, height: 80, mr: 2 }}
-              />
-            </ListItemAvatar>
-            <ListItemText
-              primary={`Order Date: ${order.date}`}
-              secondary={
-                <>
-                  <Typography variant="body2">
-                    Items: {order.itemCount}
-                  </Typography>
-                  <Typography variant="body2">
-                    Status: {order.status}
-                  </Typography>
-                </>
-              }
-            />
-            <Button variant="contained" color="primary" sx={{ mr: 2 }}>
-              More
-            </Button>
-            {order.status === "Processing" && (
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => handleCancel(order.id)}
-              >
-                Cancel
-              </Button>
-            )}
-          </ListItem>
-          <Divider variant="inset" component="li" />
-        </React.Fragment>
+        <SingleOrder order={order} handleCancel={handleCancel} />
       ))}
     </List>
   );

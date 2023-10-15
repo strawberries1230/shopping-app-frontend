@@ -1,16 +1,10 @@
-import * as React from "react";
 import {
   Box,
   List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  Typography,
-  ListItemSecondaryAction,
-  Button
+  Typography
 } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from "react";
+import WatchListEntry from "../components/WatchList/WatchListEntry";
 
 const products = [
   {
@@ -29,7 +23,7 @@ const products = [
 ];
 
 function WatchList() {
-  const [currentProducts, setCurrentProducts] = React.useState(products);
+  const [currentProducts, setCurrentProducts] = useState(products);
 
   const handleRemove = (id) => {
     const updatedProducts = currentProducts.filter(
@@ -55,35 +49,7 @@ function WatchList() {
         </Typography>
         <List>
           {currentProducts.map((product) => (
-            <ListItem key={product.id} divider>
-              <ListItemAvatar>
-                <Avatar
-                  variant="rounded"
-                  src={product.imageUrl}
-                  alt={product.name}
-                  sx={{ width: 100, height: 100, mr: 2 }} // 调整为更大的尺寸
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={product.name}
-                secondary={
-                  <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                    {product.price}
-                  </Typography>
-                }
-              />
-              <ListItemSecondaryAction>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="small"
-                  onClick={() => handleRemove(product.id)}
-                  startIcon={< DeleteIcon />}
-                >
-                  Remove
-                </Button>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <WatchListEntry product={product} handleRemove={handleRemove} />
           ))}
         </List>
       </Box>

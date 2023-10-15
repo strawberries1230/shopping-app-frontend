@@ -1,22 +1,7 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import {AppBar,Box,Toolbar,Container,Button} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
-import { Snackbar, Alert } from "@mui/material";
 import LogoLink from "./LogoLink/LogoLink";
 import LogoLinkCollapse from "./LogoLink/LogoLinkCollapse";
 import NavMenuCollapse from "./NavMenu/NavMenuCollapse";
@@ -24,7 +9,7 @@ import NavMenuNormal from "./NavMenu/NavMenuNormal";
 import RegisterButton from "./UserBar/RegisterButton";
 import UserAccount from "./UserBar/UserAccount";
 import UserIcon from "./UserBar/UserIcon";
-import { useRef } from "react";
+// import { useRef } from "react";
 import LoginSnackBar from "./LoginSnackBar";
 const settings = ["Profile", "AccountStat", "Logout"];
 
@@ -36,19 +21,16 @@ function ResponsiveAppBar() {
 
   const pages = isLoggedIn ? ["Products", "WatchList", "Orders"] : ["Products"];
 
-  // 模拟登录函数
-  //   const handleLogin = () => {
-  //     setIsLoggedIn(true);
-  //   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     handleCloseUserMenu(); // 关闭用户菜单
+    navigate("/home");
   };
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const userIconRef = useRef(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  //   const userIconRef = useRef(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -86,6 +68,7 @@ function ResponsiveAppBar() {
       setIsLoggedIn(true);
       setAlertType("success");
       setSnackbarMessage("Login Sucess!");
+      navigate("/home");
     } else {
       setAlertType("error");
       setSnackbarMessage("Username/Password doesnt match!");
@@ -120,7 +103,7 @@ function ResponsiveAppBar() {
             {isLoggedIn ? (
               <>
                 <UserIcon
-                  ref={userIconRef}
+                  //   ref={userIconRef}
                   handleOpenUserMenu={handleOpenUserMenu}
                 />
                 <UserAccount
