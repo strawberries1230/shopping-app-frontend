@@ -17,7 +17,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import { Snackbar, Alert } from "@mui/material";
-
+import LogoLink from "./LogoLink/LogoLink";
+import LogoLinkCollapse from "./LogoLink/LogoLinkCollapse";
+import NavMenuCollapse from "./NavMenu/NavMenuCollapse";
+import NavMenuNormal from "./NavMenu/NavMenuNormal";
+import RegisterButton from "./UserBar/RegisterButton";
+import UserAccount from "./UserBar/UserAccount";
+import UserIcon from "./UserBar/UserIcon";
+import { useRef } from "react";
+import LoginSnackBar from "./LoginSnackBar";
 const settings = ["Profile", "AccountStat", "Logout"];
 
 function ResponsiveAppBar() {
@@ -40,12 +48,17 @@ function ResponsiveAppBar() {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const userIconRef = useRef(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
+    // setAnchorElNav(userIconRef.current);
+
+    // console.log(userIconRef.current);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+    // console.log(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -85,191 +98,39 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
-          <Link to="/home" sx={{ textDecoration: "none", color: "white" }}>
-            <AdbIcon
-              sx={{
-                display: { xs: "none", md: "flex" },
-                mr: 1,
-                color: "white",
-              }}
-            />
-          </Link>
-
-          <Typography
-            variant="h6"
-            noWrap
-            component={Link} // 设置 component 为 Link
-            to="/home"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page}
-                  onClick={() => {
-                    if (page === "Products") {
-                      navigate("/product");
-                    } else if (isLoggedIn && page === "WatchList") {
-                      navigate("/product/watchlist");
-                    } else if (isLoggedIn && page === "Orders") {
-                      navigate("/order");
-                    }
-                    handleCloseNavMenu();
-                  }}
-                >
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
-          <Link to="/home" sx={{ textDecoration: "none", color: "white" }}>
-            <AdbIcon
-              sx={{
-                display: { xs: "flex", md: "none" },
-                mr: 1,
-                color: "white",
-              }}
-            />
-          </Link>
-
-          <Typography
-            variant="h5"
-            noWrap
-            component={Link} // 设置 component 为 Link
-            to="/home"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => {
-                  if (page === "Products") {
-                    navigate("/product");
-                  } else if (isLoggedIn && page === "WatchList") {
-                    navigate("/product/watchlist");
-                  } else if (isLoggedIn && page === "Orders") {
-                    navigate("/order");
-                  }
-                  handleCloseNavMenu();
-                }}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+          <LogoLink />
+          <NavMenuCollapse
+            handleOpenNavMenu={handleOpenNavMenu}
+            anchorElNav={anchorElNav}
+            handleCloseNavMenu={handleCloseNavMenu}
+            pages={pages}
+            navigate={navigate}
+            isLoggedIn={isLoggedIn}
+          />
+          <LogoLinkCollapse />
+          <NavMenuNormal
+            pages={pages}
+            navigate={navigate}
+            isLoggedIn={isLoggedIn}
+            handleCloseNavMenu={handleCloseNavMenu}
+          />
 
           <Box sx={{ flexGrow: 0 }}>
-            {!isLoggedIn && (
-              <Button
-                onClick={() => {
-                  navigate("/home/register");
-                }}
-                color="inherit"
-                sx={{ mr: 2 }}
-              >
-                Register
-              </Button>
-            )}
+            {!isLoggedIn && <RegisterButton navigate={navigate} />}
             {isLoggedIn ? (
               <>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/2.jpg"
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem
-                      key={setting}
-                      onClick={() => {
-                        if (setting === "Logout") {
-                          handleLogout();
-                          navigate("/home");
-                        } else if (setting === "AccountStat") {
-                          navigate("/product/stat");
-                        } else if (setting === "Profile") {
-                          navigate("/home/profile");
-                        }
-
-                        handleCloseUserMenu();
-                      }}
-                    >
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
+                <UserIcon
+                  ref={userIconRef}
+                  handleOpenUserMenu={handleOpenUserMenu}
+                />
+                <UserAccount
+                  anchorElUser={anchorElUser}
+                  handleCloseUserMenu={handleCloseUserMenu}
+                  settings={settings}
+                  handleOpenUserMenu={handleOpenUserMenu}
+                  handleLogout={handleLogout}
+                  navigate={navigate}
+                />
               </>
             ) : (
               <Button onClick={handleOpenModal} color="inherit">
@@ -285,19 +146,12 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
-      <Snackbar
+      <LoginSnackBar
         open={openSnackbar}
-        autoHideDuration={6000}
         onClose={() => setOpenSnackbar(false)}
-      >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity={alertType}
-          variant="filled"
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+        severity={alertType}
+        message={snackbarMessage}
+      />
     </AppBar>
   );
 }

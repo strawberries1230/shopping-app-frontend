@@ -1,10 +1,9 @@
-import React from 'react';
-import { Modal, TextField, Typography, Box, Button } from '@mui/material';
-
-const LoginModal = ({ open, handleClose, onLogin  }) => {
-  const [formData, setFormData] = React.useState({
-    username: '',
-    password: ''
+import { Modal, TextField, Typography, Box, Button } from "@mui/material";
+import { useState } from "react";
+function LoginModal({ open, handleClose, onLogin }) {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
   });
 
   const handleSubmit = (e) => {
@@ -17,14 +16,14 @@ const LoginModal = ({ open, handleClose, onLogin  }) => {
     <Modal open={open} onClose={handleClose}>
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           width: 400,
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           boxShadow: 24,
-          p: 4
+          p: 4,
         }}
       >
         <Typography variant="h6" component="h2">
@@ -38,7 +37,9 @@ const LoginModal = ({ open, handleClose, onLogin  }) => {
             fullWidth
             label="Username"
             value={formData.username}
-            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, username: e.target.value })
+            }
           />
           <TextField
             variant="outlined"
@@ -48,7 +49,9 @@ const LoginModal = ({ open, handleClose, onLogin  }) => {
             type="password"
             label="Password"
             value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
           />
           <Button type="submit" fullWidth variant="contained" color="primary">
             Login
@@ -57,6 +60,6 @@ const LoginModal = ({ open, handleClose, onLogin  }) => {
       </Box>
     </Modal>
   );
-};
+}
 
 export default LoginModal;

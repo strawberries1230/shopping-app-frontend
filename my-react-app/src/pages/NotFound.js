@@ -1,4 +1,3 @@
-// src/pages/NotFound.js
 import React from 'react';
 import '../assets/styles/notfound.css';
 
