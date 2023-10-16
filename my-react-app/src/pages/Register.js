@@ -1,28 +1,84 @@
 import React, { useState } from "react";
 import { Container, Typography, Paper, Alert } from "@mui/material";
 import RegisForm from "../components/RegisForm";
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
+import { handleLogin } from "../service/authService";
+import { useNavigate } from "react-router-dom";
+import { useAuthToast } from "../contexts/AuthToastContext";
 function Register() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
+  const [registerSuccess, setRegisterSuccess] = useState(null);
+  const { setIsLoggedIn } = useAuth();
+  const { openSnackBar,setOpenSnackbar, setSnackbarMessage, setAlertType } = useAuthToast();
 
   const handleSubmit = async (e) => {
+    // setOpenSnackbar(true);
     e.preventDefault();
+    console.log(openSnackBar);
+  
+    // return;
+ 
+    // Convert formData to the expected format
+    const apiFormData = {
+      username: formData.username, // Convert 'username' to 'name'
+      email: formData.email, // Keep 'email' as-is
+      rnsdc_password: formData.password, // Keep 'password' as-is
+    };
+    setSnackbarMessage("Test message from Register component");
+  
 
-    // 这里模拟了一个简单的验证。在实际应用中，你需要与后端API交互来验证数据。
-    if (
-      formData.username === "existingUser" ||
-      formData.email === "existingEmail@example.com"
-    ) {
-      setError("Username or email already exists.");
-      return;
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/users/register",
+        apiFormData
+      );
+      console.log("reponse :" + response.status);
+      if (response.status === 200) {
+        // TODO: Handle successful registration
+        // console.log("User registered successfully!");
+        setRegisterError(null);
+        setRegisterSuccess("Successfully registered!");
+        const data = {
+          username: formData.username,
+          password: formData.password,
+        };
+        handleLogin(
+          data,
+          setIsLoggedIn,
+          setAlertType,
+          setSnackbarMessage,
+          navigate,
+          setOpenSnackbar
+        );
+      } else {
+        // TODO: Handle any errors from the server
+        setRegisterSuccess(null);
+        setRegisterError(
+          "Something goes wrong with registering, try it later..."
+        );
+        // console.error("Error registering user:", response);
+      }
+    } catch (error) {
+      // TODO: Handle network or server errors
+      setRegisterSuccess(null);
+      if (error.response.status === 409) {
+        setRegisterError("Username or email already exists.");
+      } else {
+        setRegisterError(
+          "Something goes wrong with registering, try it later..."
+        );
+      }
+      // console.error("There was an error:", error);
     }
 
-    // 提交表单数据到服务器进行注册...
-    console.log("Registration data submitted:", formData);
+    // console.log("Registration data submitted:", formData);
   };
 
   return (
@@ -39,11 +95,14 @@ function Register() {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        {error && (
+        {registerError && (
           <Alert severity="error" sx={{ width: "100%", mt: 2 }}>
-            {error}
+            {registerError}
           </Alert>
         )}
+
+        {registerSuccess && <Alert severity="success">{registerSuccess}</Alert>}
+
         <RegisForm
           formData={formData}
           setFormData={setFormData}

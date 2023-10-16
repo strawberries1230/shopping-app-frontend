@@ -1,4 +1,4 @@
-import {AppBar,Box,Toolbar,Container,Button} from "@mui/material";
+import { AppBar, Box, Toolbar, Container, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
@@ -11,16 +11,33 @@ import UserAccount from "./UserBar/UserAccount";
 import UserIcon from "./UserBar/UserIcon";
 // import { useRef } from "react";
 import LoginSnackBar from "./LoginSnackBar";
+// import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
+import { handleLogin } from "../service/authService";
+import { useAuthToast } from "../contexts/AuthToastContext";
+
+//   const [snackbarMessage, setSnackbarMessage] = useState("");
+//   const [alertType, setAlertType] = useState("success");
+
 const settings = ["Profile", "AccountStat", "Logout"];
 
 function ResponsiveAppBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 新增的状态
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [alertType, setAlertType] = useState("success");
-
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const {
+    openSnackbar,
+    setOpenSnackbar,
+    snackbarMessage,
+    setSnackbarMessage,
+    alertType,
+    setAlertType,
+  } = useAuthToast();
+  //   const [isLoggedIn, setIsLoggedIn] = useState(false); // 新增的状态
+  //   const [openSnackbar, setOpenSnackbar] = useState(false);
+  //   const [snackbarMessage, setSnackbarMessage] = useState("");
+  //   const [alertType, setAlertType] = useState("success");
+  //   const { isLoggedIn, setIsLoggedIn, isRegisterLogin, setIsRegisterLogin } = useAuth();
+  // const { isLoggedIn, setIsLoggedIn } = useAuth();
   const pages = isLoggedIn ? ["Products", "WatchList", "Orders"] : ["Products"];
-
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -60,21 +77,6 @@ function ResponsiveAppBar() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
-  };
-
-  const handleLogin = (data) => {
-    console.log("Login data:", data);
-    if (data.password === "123") {
-      setIsLoggedIn(true);
-      setAlertType("success");
-      setSnackbarMessage("Login Sucess!");
-      navigate("/home");
-    } else {
-      setAlertType("error");
-      setSnackbarMessage("Username/Password doesnt match!");
-    }
-    setOpenSnackbar(true);
-    // 这里你可以将数据发送到后端进行验证
   };
 
   return (
@@ -124,7 +126,16 @@ function ResponsiveAppBar() {
             <LoginModal
               open={modalOpen}
               handleClose={handleCloseModal}
-              onLogin={handleLogin}
+              onLogin={(data) =>
+                handleLogin(
+                  data,
+                  setIsLoggedIn,
+                  setAlertType,
+                  setSnackbarMessage,
+                  navigate,
+                  setOpenSnackbar
+                )
+              }
             />
           </Box>
         </Toolbar>

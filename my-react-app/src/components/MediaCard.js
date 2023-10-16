@@ -9,8 +9,8 @@ import {
   Box,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+function MediaCard({product}) {
 
-function MediaCard() {
   return (
     <Card sx={{ width: 345, maxWidth: "100%" }}>
       <CardMedia
@@ -20,7 +20,7 @@ function MediaCard() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {product.description}
         </Typography>
       </CardContent>
       <CardActions>

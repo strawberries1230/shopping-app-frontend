@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography,  Container, Grid } from "@mui/material";
+import { Typography, Container, Grid } from "@mui/material";
 import TopProduct from "../components/Product/TopProduct";
 import RecentProduct from "../components/Product/RecentProduct";
 const buyerData = {
@@ -17,8 +17,8 @@ const buyerData = {
 
 export default function BuyerProductStat() {
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
+    <Container >
+      <Typography variant="h4" gutterBottom style={{marginTop:"20px"}}>
         Buyer Details
       </Typography>
 
@@ -36,7 +36,7 @@ export default function BuyerProductStat() {
       </Typography>
       <Grid container spacing={2}>
         {buyerData.recent3Bought.map((product) => (
-   <RecentProduct product={product}/>
+          <RecentProduct product={product} />
         ))}
       </Grid>
     </Container>

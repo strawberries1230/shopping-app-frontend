@@ -1,13 +1,17 @@
 import { Modal, TextField, Typography, Box, Button } from "@mui/material";
 import { useState } from "react";
+
 function LoginModal({ open, handleClose, onLogin }) {
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     onLogin(formData);
     handleClose();
   };
