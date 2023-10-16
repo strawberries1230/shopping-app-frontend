@@ -15,6 +15,7 @@ import LoginSnackBar from "./LoginSnackBar";
 import { useAuth } from "../contexts/AuthContext";
 import { handleLogin } from "../service/authService";
 import { useAuthToast } from "../contexts/AuthToastContext";
+import { useModal } from "../contexts/ModalContext";
 
 //   const [snackbarMessage, setSnackbarMessage] = useState("");
 //   const [alertType, setAlertType] = useState("success");
@@ -23,14 +24,15 @@ const settings = ["Profile", "AccountStat", "Logout"];
 
 function ResponsiveAppBar() {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
-  const {
-    openSnackbar,
-    setOpenSnackbar,
-    snackbarMessage,
-    setSnackbarMessage,
-    alertType,
-    setAlertType,
-  } = useAuthToast();
+  const { isModalOpen, setIsModalOpen } = useModal();
+  //   const {
+  //     openSnackbar,
+  //     setOpenSnackbar,
+  //     snackbarMessage,
+  //     setSnackbarMessage,
+  //     alertType,
+  //     setAlertType,
+  //   } = useAuthToast();
   //   const [isLoggedIn, setIsLoggedIn] = useState(false); // 新增的状态
   //   const [openSnackbar, setOpenSnackbar] = useState(false);
   //   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -69,15 +71,15 @@ function ResponsiveAppBar() {
   };
   const navigate = useNavigate();
 
-  const [modalOpen, setModalOpen] = useState(false);
+  //   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
+  //   const handleOpenModal = () => {
+  //     setIsModalOpen(true);
+  //   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  //   const handleCloseModal = () => {
+  //     setIsModalOpen(false);
+  //   };
 
   return (
     <AppBar position="static">
@@ -118,34 +120,33 @@ function ResponsiveAppBar() {
                 />
               </>
             ) : (
-              <Button onClick={handleOpenModal} color="inherit">
+              <Button
+                onClick={() => 
+                  setIsModalOpen(true)
+                }
+                color="inherit"
+              >
                 Login
               </Button>
             )}
-
+            {/* 
             <LoginModal
-              open={modalOpen}
-              handleClose={handleCloseModal}
-              onLogin={(data) =>
-                handleLogin(
-                  data,
-                  setIsLoggedIn,
-                  setAlertType,
-                  setSnackbarMessage,
-                  navigate,
-                  setOpenSnackbar
-                )
-              }
-            />
+            //   open={isModalOpen}
+            //   handleClose={handleCloseModal}
+            /> */}
+            {/* <LoginModal
+            //   open={isModalOpen}
+            //   handleClose={handleCloseModal}
+            /> */}
           </Box>
         </Toolbar>
       </Container>
-      <LoginSnackBar
-        open={openSnackbar}
-        onClose={() => setOpenSnackbar(false)}
-        severity={alertType}
-        message={snackbarMessage}
-      />
+      {/* <LoginSnackBar
+      // open={openSnackbar}
+      // onClose={() => setOpenSnackbar(false)}
+      // severity={alertType}
+      // message={snackbarMessage}
+      /> */}
     </AppBar>
   );
 }

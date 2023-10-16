@@ -14,24 +14,37 @@ import NotFound from "./pages/NotFound";
 import { Box } from "@mui/material";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AuthToastProvider } from "./contexts/AuthToastContext";
-
+import { ModalProvider } from "./contexts/ModalContext";
+import LoginModal from "./components/LoginModal";
+import LoginSnackBar from "./components/LoginSnackBar";
 function App() {
   return (
     <AuthProvider>
-           <AuthToastProvider>
+      <AuthToastProvider>
       <Router>
         <Box
           sx={{ display: "flex", flexDirection: "column", minHeight: "100%" }}
         >
           {/* flex:1, push the footer to the bottom */}
           <main style={{ flex: 1 }}>
+          {/* <AuthToastProvider> */}
+            <ModalProvider>
               <ResponsiveAppBar />
+              <LoginModal/>
+            </ModalProvider>
+
+ 
+              <LoginSnackBar/>
+            {/* </AuthToastProvider> */}
+            {/* <LoginModal
+              open={modalOpen}
+              handleClose={handleCloseModal}
+            /> */}
 
             <Routes>
-         
-                <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/home/*" element={<HomeRouter />} />
-       
+              <Route path="/" element={<Navigate to="/home" replace />} /> 
+               <Route path="/home/*" element={<HomeRouter />} />
+
               {/* <Route path="/" element={<Navigate to="/home" replace />} />
               <Route
                 path="/home/*"

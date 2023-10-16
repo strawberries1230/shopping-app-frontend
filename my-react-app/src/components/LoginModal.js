@@ -1,23 +1,38 @@
 import { Modal, TextField, Typography, Box, Button } from "@mui/material";
 import { useState } from "react";
-
-function LoginModal({ open, handleClose, onLogin }) {
+import { useAuthToast } from "../contexts/AuthToastContext";
+import { useNavigate } from "react-router-dom";
+import { handleLogin } from "../service/authService";
+import { useAuth } from "../contexts/AuthContext";
+import { useModal } from "../contexts/ModalContext";
+function LoginModal() {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-
+  const { setIsLoggedIn } = useAuth();
+  const { setOpenSnackbar, setSnackbarMessage, setAlertType } = useAuthToast();
+  const { isModalOpen, setIsModalOpen } = useModal();
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    onLogin(formData);
-    handleClose();
+    // console.log(formData);
+    handleLogin(
+      formData,
+      setIsLoggedIn,
+      setAlertType,
+      setSnackbarMessage,
+      navigate,
+      setOpenSnackbar
+    );
+    setIsModalOpen(false);
+    // handleClose();
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       <Box
         sx={{
           position: "absolute",
