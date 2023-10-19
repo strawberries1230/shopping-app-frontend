@@ -10,7 +10,7 @@ import { useProduct } from "../contexts/WatchListContext";
 function AllProducts() {
   const [products, setProducts] = useState(null);
   const [error, setError] = useState(false);
-  const { setIsLoggedIn, setIsForcedLogout} = useAuth;
+  const { isLoggedIn, setIsLoggedIn, setIsForcedLogout} = useAuth;
   const {currentProducts, setCurrentProducts} = useProduct();
 
 
@@ -25,14 +25,14 @@ function AllProducts() {
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError(true);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          forceLogout(setIsLoggedIn, setIsForcedLogout);
-        }
+        // if (
+        //   error.response &&
+        //   (error.response.status === 401 || error.response.status === 403)
+        // ) {
+        //   forceLogout(setIsLoggedIn, setIsForcedLogout);
+        // }
       });
-  }, []);
+  }, [isLoggedIn]);
   if (error) {
     return (
       <Box

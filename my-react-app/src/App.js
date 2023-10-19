@@ -18,41 +18,47 @@ import { ModalProvider } from "./contexts/ModalContext";
 import LoginModal from "./components/LoginModal";
 import LoginSnackBar from "./components/LoginSnackBar";
 import { WatchListProvider } from "./contexts/WatchListContext";
+import ForcedLogoutDdialog from "./components/ForcedLogoutDialog";
 function App() {
   return (
     <AuthProvider>
       <AuthToastProvider>
         <ModalProvider>
-            <Router>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  minHeight: "100%",
-                }}
-              >
-                {/* flex:1, push the footer to the bottom */}
-                <main style={{ flex: 1 }}>
-                  <ResponsiveAppBar />
-                  <LoginModal />
-                  <LoginSnackBar />
+          <Router>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100%",
+              }}
+            >
+              {/* flex:1, push the footer to the bottom */}
+              <main style={{ flex: 1 }}>
+                <ResponsiveAppBar />
+                <LoginModal />
+                <LoginSnackBar />
+                <ForcedLogoutDdialog />
 
-                  <Routes>
-                    <Route path="/" element={<Navigate to="/home" replace />} />
+                <Routes>
+                  <Route path="/" element={<Navigate to="/home" replace />} />
 
-                    <Route path="/home/*" element={<HomeRouter />} />
-                    <Route path="/product/*" element={
-                           <WatchListProvider>
-                    <ProductRouter />
-                    </WatchListProvider>} />
+                  <Route path="/home/*" element={<HomeRouter />} />
+                  <Route
+                    path="/product/*"
+                    element={
+                      <WatchListProvider>
+                        <ProductRouter />
+                      </WatchListProvider>
+                    }
+                  />
 
-                    <Route path="/order/*" element={<OrderRouter />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-                <Footer />
-              </Box>
-            </Router>
+                  <Route path="/order/*" element={<OrderRouter />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </Box>
+          </Router>
         </ModalProvider>
       </AuthToastProvider>
     </AuthProvider>

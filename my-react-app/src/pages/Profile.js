@@ -5,7 +5,7 @@ import axios from "axios";
 import { forceLogout } from "../service/authService";
 function ProfilePage() {
   const [user, setUser] = useState(null);
-  const {setIsLoggedIn} = useAuth();
+  const {setIsLoggedIn, setIsForcedLogout} = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,7 +22,7 @@ function ProfilePage() {
             error.response &&
             (error.response.status === 401 || error.response.status === 403)
           ) {
-            forceLogout(setIsLoggedIn);
+            forceLogout(setIsLoggedIn, setIsForcedLogout);
           }
       }
     };

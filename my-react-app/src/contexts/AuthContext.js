@@ -27,7 +27,12 @@ function AuthProvider(props) {
         ) {
           forceLogout(setIsLoggedIn, setIsForcedLogout);
         }
-        forceLogout(setIsLoggedIn, setIsForcedLogout);
+        else if(
+          error.response && error.response.status === 400)
+        {
+          setIsForcedLogout(false);
+        }
+        // forceLogout(setIsLoggedIn, setIsForcedLogout);
       });
   }, []);
 

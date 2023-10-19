@@ -10,7 +10,7 @@ import { useAuth } from "../contexts/AuthContext";
 function ProductDetails() {
   const [product, setProduct] = useState(null);
   const { id } = useParams();
-  const {setIsLoggedIn, setIsForcedLogout} = useAuth();
+  const {isLoggedIn, setIsLoggedIn, setIsForcedLogout} = useAuth();
   console.log("product id:", id);
   useEffect(() => {
     axios
@@ -22,14 +22,14 @@ function ProductDetails() {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          forceLogout(setIsLoggedIn, setIsForcedLogout);
-        }
+        // if (
+        //   error.response &&
+        //   (error.response.status === 401 || error.response.status === 403)
+        // ) {
+        //   forceLogout(setIsLoggedIn, setIsForcedLogout);
+        // }
       });
-  }, [id]);
+  }, [id, isLoggedIn]);
   return (
     <Container style={{ padding: "30px" }}>
       <Grid container spacing={4}>
