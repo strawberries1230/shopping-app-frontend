@@ -4,14 +4,20 @@ import { Grid, Box, Typography } from "@mui/material";
 import MediaCard from "../components/MediaCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-function Home() {
+import { forceLogout } from "../service/authService";
+import { useAuth } from "../contexts/AuthContext";
+import { useProduct } from "../contexts/WatchListContext";
+function AllProducts() {
   const [products, setProducts] = useState(null);
   const [error, setError] = useState(false);
+  const { setIsLoggedIn, setIsForcedLogout} = useAuth;
+  const {currentProducts, setCurrentProducts} = useProduct();
+
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/products")
+      //   .get("https://localhost:8443/api/products")
+      .get("https://localhost/api/products")
       .then((response) => {
         setProducts(response.data);
         console.log(response.data);
@@ -19,6 +25,12 @@ function Home() {
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError(true);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          forceLogout(setIsLoggedIn, setIsForcedLogout);
+        }
       });
   }, []);
   if (error) {
@@ -55,7 +67,11 @@ function Home() {
         {products.map((product) => (
           <Grid key={product.id} item xs={12} sm={4} md={3}>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <MediaCard product={product} />
+              <MediaCard
+                product={product}
+                currentProducts={currentProducts}
+                setCurrentProducts={setCurrentProducts}
+              />
             </div>
           </Grid>
         ))}
@@ -64,4 +80,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default AllProducts;

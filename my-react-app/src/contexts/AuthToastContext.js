@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 
 const AuthToastContext = createContext();
 
-function AuthToastProvider (props) {
+function AuthToastProvider(props) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
@@ -22,9 +22,9 @@ function AuthToastProvider (props) {
       {props.children}
     </AuthToastContext.Provider>
   );
-};
+}
 
 const useAuthToast = () => {
   return useContext(AuthToastContext);
 };
-export {AuthToastProvider, useAuthToast};
+export { AuthToastProvider, useAuthToast };

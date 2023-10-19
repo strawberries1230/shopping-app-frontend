@@ -7,14 +7,16 @@ import {
   Divider,
   Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 function SingleOrder({ order, handleCancel }) {
+  const navigate = useNavigate();
   return (
     <>
       <ListItem>
         <ListItemAvatar>
           <Avatar
             variant="rounded"
-            src={order.thumbnail}
+            src={"/xxx.png"}
             sx={{ width: 80, height: 80, mr: 2 }}
           />
         </ListItemAvatar>
@@ -27,14 +29,22 @@ function SingleOrder({ order, handleCancel }) {
             </>
           }
         />
-        <Button variant="contained" color="primary" sx={{ mr: 2 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mr: 2 }}
+          onClick={() => {
+            navigate(`/order/detail/${order.order_id}`);
+            // console.log("order info: ", order.order_id);
+          }}
+        >
           More
         </Button>
         {order.status === "Processing" && (
           <Button
             variant="outlined"
             color="error"
-            onClick={() => handleCancel(order.id)}
+            onClick={() => handleCancel(order.order_id)}
           >
             Cancel
           </Button>

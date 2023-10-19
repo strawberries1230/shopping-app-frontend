@@ -17,52 +17,43 @@ import { AuthToastProvider } from "./contexts/AuthToastContext";
 import { ModalProvider } from "./contexts/ModalContext";
 import LoginModal from "./components/LoginModal";
 import LoginSnackBar from "./components/LoginSnackBar";
+import { WatchListProvider } from "./contexts/WatchListContext";
 function App() {
   return (
     <AuthProvider>
       <AuthToastProvider>
-      <Router>
-        <Box
-          sx={{ display: "flex", flexDirection: "column", minHeight: "100%" }}
-        >
-          {/* flex:1, push the footer to the bottom */}
-          <main style={{ flex: 1 }}>
-          {/* <AuthToastProvider> */}
-            <ModalProvider>
-              <ResponsiveAppBar />
-              <LoginModal/>
-            </ModalProvider>
+        <ModalProvider>
+            <Router>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "100%",
+                }}
+              >
+                {/* flex:1, push the footer to the bottom */}
+                <main style={{ flex: 1 }}>
+                  <ResponsiveAppBar />
+                  <LoginModal />
+                  <LoginSnackBar />
 
- 
-              <LoginSnackBar/>
-            {/* </AuthToastProvider> */}
-            {/* <LoginModal
-              open={modalOpen}
-              handleClose={handleCloseModal}
-            /> */}
+                  <Routes>
+                    <Route path="/" element={<Navigate to="/home" replace />} />
 
-            <Routes>
-              <Route path="/" element={<Navigate to="/home" replace />} /> 
-               <Route path="/home/*" element={<HomeRouter />} />
+                    <Route path="/home/*" element={<HomeRouter />} />
+                    <Route path="/product/*" element={
+                           <WatchListProvider>
+                    <ProductRouter />
+                    </WatchListProvider>} />
 
-              {/* <Route path="/" element={<Navigate to="/home" replace />} />
-              <Route
-                path="/home/*"
-                element={
-                  <AuthToastProvider>
-                    <HomeRouter />
-                  </AuthToastProvider>
-                }
-              /> */}
-              <Route path="/product/*" element={<ProductRouter />} />
-
-              <Route path="/order/*" element={<OrderRouter />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-        </Box>
-      </Router>
+                    <Route path="/order/*" element={<OrderRouter />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </Box>
+            </Router>
+        </ModalProvider>
       </AuthToastProvider>
     </AuthProvider>
   );

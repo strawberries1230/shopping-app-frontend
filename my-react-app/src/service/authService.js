@@ -5,15 +5,13 @@ async function handleLogin(
   setAlertType,
   setSnackbarMessage,
   navigate,
-  setOpenSnackbar
-
-  
+  setOpenSnackbar,
+  setIsModalOpen
 ) {
   try {
-
-
     console.log("data :", data);
-    const response = await axios.post("http://localhost:8080/api/users/login", {
+    // "https://localhost:8443/api/users/login"
+    const response = await axios.post("https://localhost/api/users/login", {
       username: data.username,
       password: data.password,
     });
@@ -21,18 +19,45 @@ async function handleLogin(
       setAlertType("success");
       setSnackbarMessage("Login Sucess!");
       setIsLoggedIn(true);
-   
+      setIsModalOpen(false);
       navigate("/home");
     }
-    console.log("response :" + response);
+    console.log("response :", response);
   } catch (error) {
     setAlertType("error");
     setSnackbarMessage("Username/Password doesnt match!");
-
+    setIsModalOpen(true);
     console.error("Login error:", error);
   } finally {
     setOpenSnackbar(true);
-
   }
 }
-export { handleLogin };
+
+const handleLogout = async (setIsLoggedIn, handleCloseUserMenu, navigate) => {
+  try {
+    const response = await axios.post("https://localhost/api/users/logout");
+    if (response.status === 200) {
+      setIsLoggedIn(false);
+      handleCloseUserMenu(); // 关闭用户菜单
+      navigate("/home");
+    }
+    console.log("response :", response);
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+};
+
+const forceLogout = async (setIsLoggedIn, setIsForcedLogout) => {
+  try {
+    const response = await axios.post("https://localhost/api/users/logout");
+    if (response.status === 200) {
+      setIsLoggedIn(false);
+      setIsForcedLogout(true);
+    }
+    console.log("response :", response);
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+};
+
+export { handleLogin, handleLogout, forceLogout };

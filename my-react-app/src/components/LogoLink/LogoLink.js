@@ -3,14 +3,17 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Typography } from "@mui/material";
 function LogoLink() {
   return (
-    <><Link to="/home" sx={{ textDecoration: "none", color: "white" }}>
+    <>
+      <Link to="/home" sx={{ textDecoration: "none", color: "white" }}>
         <AdbIcon
           sx={{
             display: { xs: "none", md: "flex" },
             mr: 1,
             color: "white",
           }}
-        /></Link><Typography
+        />
+      </Link>
+      <Typography
         variant="h6"
         noWrap
         component={Link} // 设置 component 为 Link
@@ -24,7 +27,10 @@ function LogoLink() {
           color: "inherit",
           textDecoration: "none",
         }}
-      >LOGO</Typography></>
+      >
+        LOGO
+      </Typography>
+    </>
   );
 }
 export default LogoLink;

@@ -6,6 +6,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { handleLogin } from "../service/authService";
 import { useNavigate } from "react-router-dom";
 import { useAuthToast } from "../contexts/AuthToastContext";
+import { useModal } from "../contexts/ModalContext";
+import { forceLogout } from "../service/authService";
 function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -15,16 +17,17 @@ function Register() {
   });
   const [registerError, setRegisterError] = useState(null);
   const [registerSuccess, setRegisterSuccess] = useState(null);
-  const { setIsLoggedIn } = useAuth();
-  const { openSnackBar,setOpenSnackbar, setSnackbarMessage, setAlertType } = useAuthToast();
-
+  const { setIsLoggedIn, setIsForcedLogout} = useAuth();
+  const { openSnackBar, setOpenSnackbar, setSnackbarMessage, setAlertType } =
+    useAuthToast();
+  const { setIsModalOpen } = useModal();
   const handleSubmit = async (e) => {
     // setOpenSnackbar(true);
     e.preventDefault();
     console.log(openSnackBar);
-  
+
     // return;
- 
+
     // Convert formData to the expected format
     const apiFormData = {
       username: formData.username, // Convert 'username' to 'name'
@@ -32,11 +35,12 @@ function Register() {
       rnsdc_password: formData.password, // Keep 'password' as-is
     };
     setSnackbarMessage("Test message from Register component");
-  
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/register",
+        // "http://localhost:8080/api/users/register",
+        // "https://localhost:8843/api/users/register",
+        "https://localhost/api/users/register",
         apiFormData
       );
       console.log("reponse :" + response.status);
@@ -55,7 +59,8 @@ function Register() {
           setAlertType,
           setSnackbarMessage,
           navigate,
-          setOpenSnackbar
+          setOpenSnackbar,
+          setIsModalOpen
         );
       } else {
         // TODO: Handle any errors from the server
@@ -70,6 +75,11 @@ function Register() {
       setRegisterSuccess(null);
       if (error.response.status === 409) {
         setRegisterError("Username or email already exists.");
+      } else if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        forceLogout(setIsLoggedIn, setIsForcedLogout);
       } else {
         setRegisterError(
           "Something goes wrong with registering, try it later..."

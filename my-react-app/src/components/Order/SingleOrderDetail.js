@@ -8,7 +8,7 @@ import {
 import { Link } from "react-router-dom";
 function SingleOrderDetail({ item }) {
   return (
-    <ListItem key={item.id}>
+    <ListItem key={item.item_id}>
       <ListItemAvatar>
         <Avatar
           variant="rounded"
@@ -18,7 +18,7 @@ function SingleOrderDetail({ item }) {
       </ListItemAvatar>
       <ListItemText
         primary={
-          <Link to={`/products/${item.id}`} color="primary">
+          <Link to={`/product/${item.item_id}`} color="primary">
             {item.name}
           </Link>
         }

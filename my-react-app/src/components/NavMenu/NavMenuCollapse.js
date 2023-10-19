@@ -1,10 +1,4 @@
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 function NavMenuCollapse({
@@ -51,7 +45,8 @@ function NavMenuCollapse({
             onClick={() => {
               if (page === "Products") {
                 navigate("/product");
-              } else if (isLoggedIn && page === "WatchList") {
+              } 
+              if (isLoggedIn && page === "WatchList") {
                 navigate("/product/watchlist");
               } else if (isLoggedIn && page === "Orders") {
                 navigate("/order");

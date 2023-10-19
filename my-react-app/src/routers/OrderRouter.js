@@ -7,7 +7,7 @@ function OrderRouter() {
   return (
     <Routes>
       <Route path="/" element={<OrdersPage />} />
-      <Route path="/detail" element={<OrderDetailPage />} />
+      <Route path="/detail/:order_id" element={<OrderDetailPage />} />
     </Routes>
   );
 }

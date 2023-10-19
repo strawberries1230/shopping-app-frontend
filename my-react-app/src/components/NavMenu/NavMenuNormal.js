@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-function NavMenu({ pages, navigate, isLoggedIn, handleCloseNavMenu }) {
+function NavMenuNormal({ pages, navigate, isLoggedIn, handleCloseNavMenu }) {
   return (
     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
       {pages.map((page) => (
@@ -8,7 +8,8 @@ function NavMenu({ pages, navigate, isLoggedIn, handleCloseNavMenu }) {
           onClick={() => {
             if (page === "Products") {
               navigate("/product");
-            } else if (isLoggedIn && page === "WatchList") {
+            }
+            if (isLoggedIn && page === "WatchList") {
               navigate("/product/watchlist");
             } else if (isLoggedIn && page === "Orders") {
               navigate("/order");
@@ -23,4 +24,4 @@ function NavMenu({ pages, navigate, isLoggedIn, handleCloseNavMenu }) {
     </Box>
   );
 }
-export default NavMenu;
+export default NavMenuNormal;

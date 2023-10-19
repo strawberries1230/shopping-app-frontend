@@ -1,13 +1,13 @@
 import React from "react";
 import { Typography, Divider } from "@mui/material";
-function ShortDescription() {
+function ShortDescription({product}) {
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        Product Name
+        {product.description}
       </Typography>
       <Typography variant="h5" color="primary" gutterBottom>
-        $99.99
+        {product.retail_price}
       </Typography>
       <Typography variant="body1" paragraph>
         This is a detailed description of the product. It provides key features,

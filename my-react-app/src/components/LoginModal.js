@@ -18,17 +18,15 @@ function LoginModal() {
   const { isModalOpen, setIsModalOpen } = useModal();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(formData);
     handleLogin(
       formData,
       setIsLoggedIn,
       setAlertType,
       setSnackbarMessage,
       navigate,
-      setOpenSnackbar
+      setOpenSnackbar,
+      setIsModalOpen
     );
-    setIsModalOpen(false);
-    // handleClose();
   };
 
   return (
